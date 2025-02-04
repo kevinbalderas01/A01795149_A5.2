@@ -10,18 +10,22 @@ import os
 import time
 import json
 
+
 def read_json_file(filename):
     '''
     Función encargada de leer el archivo de tipo json
     '''
-    with open(filename) as jsonfile:
+
+    with open(filename, 'r', encoding='utf-8') as jsonfile:
         result = json.loads(jsonfile.read())
     return result
-    
+
+
 def write_info_file(data):
     '''
     La función escriba la información en el archivo de salida correspondiente
     '''
+
     final_cost, final_time, start_time = data
     with open('SalesResults.txt', 'w', encoding='utf-8') as file:
         file.write(f'Final cost: {final_cost}\n')
@@ -30,15 +34,17 @@ def write_info_file(data):
 
 def delete_final_file(path='SalesResults.txt'):
     '''
-    Esta función elimina el archivo final en caso de existir para sobrescribirlo con cada ejecución
+    Esta función elimina el archivo final en caso de existir
+    para sobrescribirlo con cada ejecución
     '''
     if os.path.isfile(path):
         os.remove(path)
 
+
 def get_cost_from_sale(sale, products):
     '''
-    Esta función calcula el costo de cada item, 
-    Viendo el catalogo y multiplicando costo 
+    Esta función calcula el costo de cada item,
+    Viendo el catalogo y multiplicando costo
     Por la cantidad de productos comprados
     '''
     cost = 0
@@ -49,9 +55,10 @@ def get_cost_from_sale(sale, products):
             cost = product['price'] * quantity
     return cost
 
+
 def calculate_cost(products, sales):
     '''
-    Esta función calcula el costo de todos los productos de la venta, 
+    Esta función calcula el costo de todos los productos de la venta,
     Por cada item vendido manda a llamar a otra función
     Para obtener el calulo de la venta basado en precio y cantidad.
     Al final devuelve la sumatoria global de cada item vendido
@@ -60,7 +67,8 @@ def calculate_cost(products, sales):
     for sale in sales:
         cost_item = get_cost_from_sale(sale, products)
         total_cost += cost_item
-    return round(total_cost,2)
+    return round(total_cost, 2)
+
 
 def main():
     '''
@@ -70,7 +78,7 @@ def main():
     delete_final_file()
     print('Inicio de programa')
     try:
-        products_file, sales_file = sys.argv[1],sys.argv[2] 
+        products_file, sales_file = sys.argv[1], sys.argv[2]
         result_products = read_json_file(products_file)
         results_sales = read_json_file(sales_file)
         final_cost = calculate_cost(result_products, results_sales)
@@ -80,8 +88,8 @@ def main():
         write_info_file((final_cost, final_time, start_time))
         print('Fin de execución')
     except FileNotFoundError:
-        print('No se encontró archivo. Debes ingresar un archivo para trabajar')
+        print('No file was found')
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     main()
-        
