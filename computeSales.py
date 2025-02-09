@@ -87,8 +87,8 @@ def main():
         print(f'Tiempo de execucion en segundos: {final_time-start_time}')
         write_info_file((final_cost, final_time, start_time))
         print('Fin de execución')
-    except FileNotFoundError:
-        print('No file was found')
+    except (FileNotFoundError, IndexError) as error:
+        print('No file was found', error)
 
 
 if __name__ == '__main__':
